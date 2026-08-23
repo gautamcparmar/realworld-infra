@@ -1,0 +1,10 @@
+project_name = "realworld"
+environment  = "production"
+owner        = "platform"
+
+approval_email_addresses = ["you@example.com"]
+monthly_budget_usd       = 20
+
+# Production defaults (Multi-AZ RDS, deletion protection) are selected
+# automatically from environment = "production". Override only if you need to.
+rds_multi_az = false

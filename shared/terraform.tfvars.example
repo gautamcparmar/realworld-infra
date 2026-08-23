@@ -1,0 +1,11 @@
+project_name = "realworld"
+owner        = "platform"
+
+frontend_repository_id = "YOUR_ORG/realworld-frontend"
+backend_repository_id  = "YOUR_ORG/realworld-backend"
+source_branch          = "main"
+
+# Leave empty to let Terraform create a GitHub connection (then authorize it in the console).
+codestar_connection_arn = ""
+
+approval_email_addresses = ["you@example.com"]

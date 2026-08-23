@@ -1,0 +1,6 @@
+project_name = "realworld"
+environment  = "stage"
+owner        = "platform"
+
+approval_email_addresses = ["you@example.com"]
+monthly_budget_usd       = 10
