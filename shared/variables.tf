@@ -60,6 +60,12 @@ variable "frontend_buildspec_deploy" {
   default = "scripts/buildspec-deploy.yml"
 }
 
+variable "frontend_buildspec_perf_test" {
+  description = "Buildspec that runs k6 against staging after Deploy-Stage. Empty disables the stage."
+  type        = string
+  default     = "scripts/buildspec-perf-test.yml"
+}
+
 variable "backend_buildspec_validate" {
   type    = string
   default = "scripts/buildspec-validate.yml"
@@ -78,6 +84,12 @@ variable "backend_buildspec_test" {
 variable "backend_buildspec_deploy" {
   type    = string
   default = "scripts/buildspec-deploy.yml"
+}
+
+variable "backend_buildspec_perf_test" {
+  description = "Buildspec that runs k6 against staging after Deploy-Stage. Empty disables the stage."
+  type        = string
+  default     = "scripts/buildspec-perf-test.yml"
 }
 
 variable "require_production_approval" {

@@ -1,5 +1,5 @@
 data "aws_iam_policy_document" "db_secret" {
-  count = var.db_secret_arn == null ? 0 : 1
+  count = var.enable_db_secret_access ? 1 : 0
 
   statement {
     sid    = "AllowRdsManageSecret"
@@ -49,21 +49,21 @@ data "aws_iam_policy_document" "db_secret" {
 }
 
 resource "aws_secretsmanager_secret_policy" "db" {
-  count = var.db_secret_arn == null ? 0 : 1
+  count = var.enable_db_secret_access ? 1 : 0
 
   secret_arn = var.db_secret_arn
   policy     = data.aws_iam_policy_document.db_secret[0].json
 }
 
 resource "aws_secretsmanager_secret" "this" {
-  name = "${var.name_prefix}-api-function-secret"
-  kms_key_id = var.kms_key_arn
-  description = "Secret for the API function"
+  name                    = "${var.name_prefix}-api-function-secret"
+  kms_key_id              = var.kms_key_arn
+  description             = "Secret for the API function"
   recovery_window_in_days = 0
-  tags = var.tags
+  tags                    = var.tags
 }
 
 resource "aws_secretsmanager_secret_version" "this" {
-  secret_id = aws_secretsmanager_secret.this.id
+  secret_id     = aws_secretsmanager_secret.this.id
   secret_string = jsonencode(var.environment_variables)
 }

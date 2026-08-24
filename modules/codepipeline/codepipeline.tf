@@ -1,6 +1,6 @@
 resource "aws_codepipeline" "this" {
-  name          = local.pipeline_name
-  pipeline_type = "V2"
+  name           = local.pipeline_name
+  pipeline_type  = "V2"
   role_arn       = var.codepipeline_role_arn
   execution_mode = "QUEUED"
 
@@ -130,6 +130,35 @@ resource "aws_codepipeline" "this" {
             value = "stage"
           }
         ])
+      }
+    }
+  }
+
+  dynamic "stage" {
+    for_each = local.enable_perf_test ? [1] : []
+
+    content {
+      name = "Performance-Test"
+
+      action {
+        name            = "PerformanceTest"
+        category        = "Build"
+        owner           = "AWS"
+        provider        = "CodeBuild"
+        version         = "1"
+        input_artifacts = ["source_output"]
+
+        configuration = {
+          ProjectName = aws_codebuild_project.stage["perf_test"].name
+          EnvironmentVariables = jsonencode([
+            local.pipeline_exec_id_env,
+            {
+              name  = "ENVIRONMENT"
+              type  = "PLAINTEXT"
+              value = "stage"
+            }
+          ])
+        }
       }
     }
   }

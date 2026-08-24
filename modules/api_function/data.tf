@@ -44,21 +44,16 @@ data "aws_iam_policy_document" "lambda" {
     ]
   }
 
-  dynamic "statement" {
-    for_each = var.db_secret_arn == null ? [
-      aws_secretsmanager_secret.this.arn
-    ] : [
-      var.db_secret_arn,
-      aws_secretsmanager_secret.this.arn
+  statement {
+    sid    = "ReadSecrets"
+    effect = "Allow"
+    actions = [
+      "secretsmanager:GetSecretValue",
+      "secretsmanager:DescribeSecret",
     ]
-
-    content {
-      effect = "Allow"
-      actions = [
-        "secretsmanager:GetSecretValue",
-        "secretsmanager:DescribeSecret",
-      ]
-      resources = [statement.value]
-    }
+    resources = concat(
+      [aws_secretsmanager_secret.this.arn],
+      var.enable_db_secret_access ? [var.db_secret_arn] : [],
+    )
   }
 }

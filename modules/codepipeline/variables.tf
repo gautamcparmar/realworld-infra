@@ -66,6 +66,12 @@ variable "buildspec_deploy" {
   type = string
 }
 
+variable "buildspec_perf_test" {
+  description = "Optional buildspec for a post-stage performance test. Empty skips the stage."
+  type        = string
+  default     = ""
+}
+
 variable "require_production_approval" {
   description = "Insert a manual approval action between stage deploy and production deploy."
   type        = bool

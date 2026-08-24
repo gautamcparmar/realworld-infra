@@ -30,20 +30,20 @@ module "security_groups" {
 module "rds" {
   source = "../modules/rds"
 
-  name_prefix              = local.name_prefix
-  database_subnet_ids      = module.vpc.database_subnet_ids
-  rds_security_group_id    = module.security_groups.rds_security_group_id
-  engine_version           = var.rds_engine_version
-  instance_class           = local.rds_instance_class
-  allocated_storage        = var.rds_allocated_storage
-  max_allocated_storage    = var.rds_max_allocated_storage
-  multi_az                 = local.rds_multi_az
-  backup_retention_period  = local.rds_backup_days
-  kms_key_arn              = module.kms.key_arn
-  deletion_protection      = local.destroy_protection
-  skip_final_snapshot      = !local.is_production
-  log_retention_days       = local.log_retention_days
-  tags                     = local.common_tags
+  name_prefix             = local.name_prefix
+  database_subnet_ids     = module.vpc.database_subnet_ids
+  rds_security_group_id   = module.security_groups.rds_security_group_id
+  engine_version          = var.rds_engine_version
+  instance_class          = local.rds_instance_class
+  allocated_storage       = var.rds_allocated_storage
+  max_allocated_storage   = var.rds_max_allocated_storage
+  multi_az                = local.rds_multi_az
+  backup_retention_period = local.rds_backup_days
+  kms_key_arn             = module.kms.key_arn
+  deletion_protection     = local.destroy_protection
+  skip_final_snapshot     = !local.is_production
+  log_retention_days      = local.log_retention_days
+  tags                    = local.common_tags
 }
 
 module "frontend_bucket" {
@@ -70,25 +70,26 @@ module "apigateway" {
 module "api_function" {
   source = "../modules/api_function"
 
-  name_prefix          = local.name_prefix
-  handler              = "lambda.handler"
-  api_id               = module.apigateway.api_id
-  api_execution_arn    = module.apigateway.execution_arn
-  subnet_ids           = module.vpc.application_subnet_ids
-  security_group_ids   = [module.security_groups.lambda_security_group_id]
-  kms_key_arn          = module.kms.key_arn
-  aws_region           = local.aws_region
-  aws_account_id       = local.account_id
-  aws_partition        = local.aws_partition
-  log_retention_days   = local.log_retention_days
-  ssm_parameter_prefix = "/${var.project_name}"
-  db_secret_arn        = module.rds.master_user_secret_arn
+  name_prefix             = local.name_prefix
+  handler                 = "lambda.handler"
+  api_id                  = module.apigateway.api_id
+  api_execution_arn       = module.apigateway.execution_arn
+  subnet_ids              = module.vpc.application_subnet_ids
+  security_group_ids      = [module.security_groups.lambda_security_group_id]
+  kms_key_arn             = module.kms.key_arn
+  aws_region              = local.aws_region
+  aws_account_id          = local.account_id
+  aws_partition           = local.aws_partition
+  log_retention_days      = local.log_retention_days
+  ssm_parameter_prefix    = "/${var.project_name}"
+  enable_db_secret_access = true
+  db_secret_arn           = module.rds.master_user_secret_arn
 
   environment_variables = {
-    POSTGRES_HOST = module.rds.endpoint,
-    POSTGRES_PORT = module.rds.port,
-    POSTGRES_DB = module.rds.db_name,
-    JWT_SECRET = "secret",
+    POSTGRES_HOST  = module.rds.endpoint,
+    POSTGRES_PORT  = module.rds.port,
+    POSTGRES_DB    = module.rds.db_name,
+    JWT_SECRET     = "secret",
     JWT_EXPIRES_IN = "7d"
   }
   tags = local.common_tags

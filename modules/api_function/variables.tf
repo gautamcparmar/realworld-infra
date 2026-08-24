@@ -86,9 +86,15 @@ variable "ssm_parameter_prefix" {
 }
 
 variable "db_secret_arn" {
-  description = "RDS master user secret ARN. When set, the function role can read the secret."
+  description = "RDS master user secret ARN. Used when enable_db_secret_access is true."
   type        = string
   default     = null
+}
+
+variable "enable_db_secret_access" {
+  description = "Grant the function role access to db_secret_arn. Must be known at plan time."
+  type        = bool
+  default     = false
 }
 
 variable "tags" {

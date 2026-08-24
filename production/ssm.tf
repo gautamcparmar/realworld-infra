@@ -86,6 +86,12 @@ resource "aws_ssm_parameter" "kms_key_arn" {
   value = module.kms.key_arn
 }
 
+resource "aws_ssm_parameter" "api_url" {
+  name  = "${local.ssm_prefix}/api/url"
+  type  = "String"
+  value = "https://${module.cloudfront.domain_name}"
+}
+
 resource "aws_ssm_parameter" "application_domain" {
   name  = "${local.ssm_prefix}/domain_name"
   type  = "String"
