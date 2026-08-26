@@ -22,3 +22,11 @@ output "db_name" {
   description = "Initial database name."
   value       = aws_db_instance.this.db_name
 }
+
+output "backup_vault_name" {
+  value = aws_backup_vault.this.name
+}
+
+output "backup_plan_id" {
+  value = aws_backup_plan.this.id
+}

@@ -34,6 +34,12 @@ variable "backup_retention_period" {
   type = number
 }
 
+variable "backup_schedule" {
+  description = "AWS Backup cron expression in UTC for the daily RDS backup."
+  type        = string
+  default     = "cron(0 7 * * ? *)"
+}
+
 variable "kms_key_arn" {
   type = string
 }

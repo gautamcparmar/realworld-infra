@@ -47,6 +47,7 @@ data "aws_iam_policy_document" "key" {
       identifiers = [
         "s3.amazonaws.com",
         "rds.amazonaws.com",
+        "backup.amazonaws.com",
         "sns.amazonaws.com",
         "events.amazonaws.com",
         "codepipeline.amazonaws.com",
