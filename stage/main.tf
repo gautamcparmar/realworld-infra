@@ -106,15 +106,15 @@ module "cloudfront" {
   tags                           = local.common_tags
 }
 
-# module "monitoring" {
-#   source = "../modules/monitoring"
+module "monitoring" {
+  source = "../modules/monitoring"
 
-#   name_prefix                = local.name_prefix
-#   sns_topic_arn              = aws_sns_topic.alerts.arn
-#   rds_instance_id            = module.rds.instance_id
-#   cloudfront_distribution_id = module.cloudfront.distribution_id
-#   api_id                     = module.apigateway.api_id
-#   monthly_budget_usd         = var.monthly_budget_usd
-#   aws_region                 = local.aws_region
-#   tags                       = local.common_tags
-# }
+  name_prefix                = local.name_prefix
+  sns_topic_arn              = aws_sns_topic.alerts.arn
+  rds_instance_id            = module.rds.instance_id
+  cloudfront_distribution_id = module.cloudfront.distribution_id
+  api_id                     = module.apigateway.api_id
+  monthly_budget_usd         = var.monthly_budget_usd
+  aws_region                 = local.aws_region
+  tags                       = local.common_tags
+}
